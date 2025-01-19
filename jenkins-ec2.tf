@@ -6,7 +6,7 @@ resource "aws_instance" "jenkins_server" {
   key_name               = "${var.key_pair_name}"  # taken from variables.tf
 
   root_block_device {
-    volume_size = 10.  # 10GB is a recommended minimum if running Jenkins as a Docker container
+    volume_size = 10  # 10GB is a recommended minimum if running Jenkins as a Docker container
     volume_type = "gp2"
   }
 
