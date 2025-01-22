@@ -1,6 +1,6 @@
 resource "aws_security_group" "allow_all_from_my_ip" {
   name        = "allow_all_from_my_ip"
-  description = "Allow all inbound traffic from my IP"
+  description = "Allow all inbound traffic from My IP"
 
   tags = {
     Name = "my_ec2_sg"
@@ -8,7 +8,7 @@ resource "aws_security_group" "allow_all_from_my_ip" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "my_ec2_sg_ipv4" {
-    description = "Allow HTTP from Leumi Proxy"
+    description = "Allow HTTP from My IP"
     cidr_ipv4         = aws_vpc.main.cidr_block
     from_port   = 0
     to_port     = 0
@@ -17,7 +17,7 @@ resource "aws_vpc_security_group_ingress_rule" "my_ec2_sg_ipv4" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "my_ec2_sg_ipv6" {
-    description = "Allow HTTP from Leumi Proxy"
+    description = "Allow HTTP from My IP"
     from_port   = 0
     to_port     = 0
     protocol    = "tcp"
