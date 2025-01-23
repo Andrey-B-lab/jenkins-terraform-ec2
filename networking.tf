@@ -18,6 +18,7 @@ resource "aws_vpc_security_group_ingress_rule" "my_ec2_sg_ipv4" {
 
 resource "aws_vpc_security_group_ingress_rule" "my_ec2_sg_ipv6" {
     description = "Allow HTTP from My IP"
+    cidr_ipv6         = aws_vpc.main.ipv6_cidr_block
     from_port   = 0
     to_port     = 0
     protocol    = "tcp"
