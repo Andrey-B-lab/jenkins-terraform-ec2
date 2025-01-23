@@ -22,7 +22,7 @@ resource "aws_vpc_security_group_ingress_rule" "my_ec2_sg_ipv6" {
     from_port   = 0
     to_port     = 0
     protocol    = "tcp"
-    cidr_blocks = ["${var.my_ip_address}/32"]  # Taken from variables.tf
+    ipv6_cidr_blocks = ["${var.my_ip_address}/32"]  # Taken from variables.tf
 }
 
 resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
