@@ -9,30 +9,27 @@ resource "aws_security_group" "jenkins_access" {
   }
 }
 
-# Ingress rule for IPv4
-resource "aws_vpc_security_group_ingress_rule" "ssh_from_jenkins_ipv4" {
-  security_group_id = aws_security_group.jenkins_access.id
-  description       = "Allow SSH from Jenkins IPv4"
+resource "aws_security_group" "example" {
+  name        = "example-sg"
+  description = "Security group for first server"
+  vpc_id      = var.vpc_id
+
+  tags = {
+    Name = "example-sg"
+  }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "example_ingress" {
+  security_group_id = aws_security_group.example.id
+  description       = "Allow SSH from my IP"
   from_port         = 22
   to_port           = 22
   protocol          = "tcp"
-  cidr_blocks       = ["${var.jenkins_ip_address}/32"]  # The Jenkins server's public IP or private IP range
+  cidr_blocks       = ["${var.my_ip}/32"]  # If you want to restrict to exactly one IP
 }
 
-# Optionally, if you actually need IPv6
-# If not needed, omit this entirely
-resource "aws_vpc_security_group_ingress_rule" "ssh_from_jenkins_ipv6" {
-  security_group_id    = aws_security_group.jenkins_access.id
-  description          = "Allow SSH from Jenkins IPv6"
-  from_port            = 22
-  to_port              = 22
-  protocol             = "tcp"
-  ipv6_cidr_blocks     = ["${var.jenkins_ip_address}/128"]  # If you have a real IPv6
-}
-
-# Egress rule: allow all outbound (common default)
-resource "aws_vpc_security_group_egress_rule" "allow_all_outbound" {
-  security_group_id = aws_security_group.jenkins_access.id
+resource "aws_vpc_security_group_egress_rule" "example_egress" {
+  security_group_id = aws_security_group.example.id
   description       = "Allow all outbound"
   from_port         = 0
   to_port           = 0
