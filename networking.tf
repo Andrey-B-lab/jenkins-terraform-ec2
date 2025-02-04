@@ -1,7 +1,7 @@
 resource "aws_security_group" "my_ip_ssh" {
   name        = "sg-my-ip-ssh"
   description = "Allow SSH from my IP"
-  vpc_id      = var.vpc_id
+  vpc_id      = data.aws_vpc.default.id
 
   tags = {
     Name = "sg-my-ip-ssh"
