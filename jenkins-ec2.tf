@@ -3,7 +3,7 @@ resource "aws_instance" "jenkins_server" {
   instance_type = "t2.micro"
 
   vpc_security_group_ids = [aws_security_group.allow_all_from_my_ip.id]
-  key_name               = "${var.key_pair_name}"  # taken from variables.tf
+  key_name               = var.key_pair_name  # taken from variables.tf
 
   root_block_device {
     volume_size = 10  # 10GB is a recommended minimum if running Jenkins as a Docker container
