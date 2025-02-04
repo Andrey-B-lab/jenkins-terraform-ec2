@@ -1,21 +1,11 @@
 # Security Group for the second server
-resource "aws_security_group" "jenkins_access" {
-  name        = "jenkins_access"
-  description = "Allow SSH from Jenkins server"
+resource "aws_security_group" "allow_all_from_my_ip" {
+  name        = "allow_all_from_my_ip"
+  description = "Allow all from my IP"
   vpc_id      = data.aws_vpc.default.id
   
   tags = {
-    Name = "my_ec2_sg-jenkins"
-  }
-}
-
-resource "aws_security_group" "example" {
-  name        = "example-sg"
-  description = "Security group for first server"
-  vpc_id      = var.vpc_id
-
-  tags = {
-    Name = "example-sg"
+    Name = "my_ec2_sg-myIP"
   }
 }
 
