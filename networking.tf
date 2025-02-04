@@ -1,38 +1,31 @@
 resource "aws_security_group" "allow_all_from_my_ip" {
   name        = "allow_all_from_my_ip"
-  description = "Allow all inbound traffic from My IP"
+  description = "Allow inbound from my IP for all ports"
+  vpc_id      = "YOUR-VPC-ID" # If you're using the default VPC, you can omit or data-source it.
 
   tags = {
-    Name = "my_ec2_sg"
+    Name = "allow_all_from_my_ip"
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "my_ec2_sg_ipv4" {
-    description = "Allow HTTP from My IP"
-    cidr_ipv4         = aws_vpc.main.cidr_block
-    from_port   = 0
-    to_port     = 0
-    protocol    = "tcp"
-    cidr_blocks = ["${var.my_ip_address}/32"]  # Taken from variables.tf
+# Ingress rule: Allow all protocols/ports from my IP
+resource "aws_security_group_rule" "ingress_all_from_my_ip" {
+  type              = "ingress"
+  security_group_id = aws_security_group.allow_all_from_my_ip.id
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["${var.my_ip_address}/32"]
+  description       = "Allow all inbound from my IP"
 }
 
-resource "aws_vpc_security_group_ingress_rule" "my_ec2_sg_ipv6" {
-    description = "Allow HTTP from My IP"
-    cidr_ipv6         = aws_vpc.main.ipv6_cidr_block
-    from_port   = 0
-    to_port     = 0
-    protocol    = "tcp"
-    ipv6_cidr_blocks = ["${var.my_ip_address}/32"]  # Taken from variables.tf
-}
-
-resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
-  security_group_id = aws_security_group.my_ec2_sg.id
-  cidr_ipv4         = "0.0.0.0/0"
-  ip_protocol       = "-1" # semantically equivalent to all ports
-}
-
-resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv6" {
-  security_group_id = aws_security_group.my_ec2_sg.id
-  cidr_ipv6         = "::/0"
-  ip_protocol       = "-1" # semantically equivalent to all ports
+# Egress rule: Allow all outbound
+resource "aws_security_group_rule" "egress_all_outbound" {
+  type              = "egress"
+  security_group_id = aws_security_group.allow_all_from_my_ip.id
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  description       = "Allow all outbound"
 }
