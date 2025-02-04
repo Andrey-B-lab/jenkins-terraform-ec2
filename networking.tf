@@ -15,7 +15,7 @@ resource "aws_vpc_security_group_ingress_rule" "example_ingress" {
   from_port         = 22
   to_port           = 22
   protocol          = "tcp"
-  cidr_blocks       = ["${var.my_ip}/32"]  # If you want to restrict to exactly one IP
+  cidr_blocks       = ["${var.my_ip_address}/32"]  # If you want to restrict to exactly one IP
 }
 
 resource "aws_vpc_security_group_egress_rule" "example_egress" {
